@@ -4,9 +4,9 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 group = 'org.jpos.template'
-version = '3.0.0-SNAPSHOT'
-sourceCompatibility = 17
-targetCompatibility = 17
+version = '3.0.1-SNAPSHOT'
+sourceCompatibility = 23
+targetCompatibility = 23
 
 repositories {
     mavenCentral()
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jpos:jpos:3.0.0-SNAPSHOT'
+    implementation 'org.jpos:jpos:3.0.1-SNAPSHOT'
 }
 
 apply from: 'jpos-app.gradle'

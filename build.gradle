@@ -8,15 +8,54 @@ version = '2.1.8-SNAPSHOT'
 sourceCompatibility = 11
 targetCompatibility = 11
 
+// Cargar el archivo de propiedades según el perfil seleccionado
+def targetEnv = project.hasProperty('target') ? project.target : 'local'
+def propsFile = file("${rootDir}/src/dist/cfg/${targetEnv}.properties")
+
+if (propsFile.exists()) {
+    propsFile.withReader { reader ->
+        def properties = new Properties()
+        properties.load(reader)
+        properties.each { key, value ->
+            project.ext.set(key, value)
+        }
+    }
+} else {
+    throw new GradleException("Archivo de configuración '${targetEnv}.properties' no encontrado")
+}
+
+// Imprimir variables cargadas
+println "Perfil activo: ${targetEnv}"
+println "DB Host: ${project.findProperty('dbhost')}"
+
 repositories {
     mavenCentral()
     maven { url 'https://jpos.org/maven' }
     mavenLocal()
+    maven { url 'https://repo.maven.apache.org/maven2' }
 }
 
 dependencies {
+    // Dependencia de jPOS (ya incluida en tu proyecto)
     implementation 'org.jpos:jpos:2.1.8-SNAPSHOT'
+
+    // JPA API
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    // Hibernate como implementación de JPA
+    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+
+    // Driver para la base de datos (por ejemplo, MySQL)
+    implementation 'mysql:mysql-connector-java:8.0.33' // Sustituye según tu base de datos
+
+    // Lombok para generar getters, setters y constructores automáticamente
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
+
+//dependencies {
+//    implementation 'org.jpos:jpos:2.1.8-SNAPSHOT'
+//}
 
 apply from: 'jpos-app.gradle'
 

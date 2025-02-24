@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+        <property name="generate_statistics">false</property>
+        <property name="max_fetch_depth">2</property>
+        <property name="default_batch_fetch_size">16</property>
+        <property name="use_streams_for_binary">true</property>
+        <property name="connection.isolation">2</property>
+        <property name="hibernate.c3p0.min_size">40</property>
+        <property name="hibernate.c3p0.max_size">400</property>
+        <property name="hibernate.c3p0.acquire_increment">30</property>
+        <property name="hibernate.c3p0.timeout">120</property>
+        <property name="hibernate.c3p0.max_statements">600</property>
+        <property name="hibernate.c3p0.idle_test_period">300</property>
+        <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="unreturnedConnectionTimeout">30000</property>
+        <property name="debugUnreturnedConnectionStackTraces">false</property>
+
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://@dbhost@/@dbname@?autoReconnect=true</property>
+        <property name="connection.username">@dbuser@</property>
+        <property name="connection.password">@dbpass@</property>
+        <property name="connection.schema">@dbname@</property>
+        <mapping class="eldar.entities.Tranlog"/>
+    </session-factory>
+</hibernate-configuration>

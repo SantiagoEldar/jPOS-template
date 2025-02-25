@@ -5,12 +5,12 @@ apply plugin: 'eclipse'
 
 group = 'org.jpos.template'
 version = '2.1.8-SNAPSHOT'
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 17
+targetCompatibility = 17
 
 // Cargar el archivo de propiedades según el perfil seleccionado
 def targetEnv = project.hasProperty('target') ? project.target : 'local'
-def propsFile = file("${rootDir}/src/dist/cfg/${targetEnv}.properties")
+def propsFile = file("${rootDir}/${targetEnv}.properties")
 
 if (propsFile.exists()) {
     propsFile.withReader { reader ->
@@ -37,20 +37,20 @@ repositories {
 
 dependencies {
     // Dependencia de jPOS (ya incluida en tu proyecto)
-    implementation 'org.jpos:jpos:2.1.8-SNAPSHOT'
-
-    // JPA API
-    implementation 'javax.persistence:javax.persistence-api:2.2'
-
-    // Hibernate como implementación de JPA
-    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+    implementation 'org.jpos:jpos:2.1.9'
 
     // Driver para la base de datos (por ejemplo, MySQL)
-    implementation 'mysql:mysql-connector-java:8.0.33' // Sustituye según tu base de datos
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    // https://mvnrepository.com/artifact/org.jpos.ee/jposee-dbsupport
+    implementation 'org.jpos.ee:jposee-dbsupport:2.2.9'
 
     // Lombok para generar getters, setters y constructores automáticamente
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    implementation("org.jpos.ee:jposee-eerest:2.2.8")
+
 }
 
 //dependencies {

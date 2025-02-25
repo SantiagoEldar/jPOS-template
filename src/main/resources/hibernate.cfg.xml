@@ -20,9 +20,12 @@
         <property name="hibernate.c3p0.max_statements">600</property>
         <property name="hibernate.c3p0.idle_test_period">300</property>
         <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+
         <property name="hbm2ddl.auto">update</property>
+
         <property name="unreturnedConnectionTimeout">30000</property>
         <property name="debugUnreturnedConnectionStackTraces">false</property>
+
 
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>

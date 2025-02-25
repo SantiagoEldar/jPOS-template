@@ -4,6 +4,13 @@
     <property name="sessions" value="2"/>
     <property name="max-sessions" value="128"/>
     <property name="debug" value="true"/>
-    <participant class="org.jpos.transaction.participant.QueryHost"/>
-    <participant class="org.jpos.transaction.participant.SendResponse"/>
+
+    <participant class="org.jpos.transaction.Open" logger="Q2" realm="open-db">
+        <property name="checkpoint" value="open"/>
+        <property name="timeout" value="30000"/>
+    </participant>
+    <participant class="org.jpos.transaction.participant.QueryHost" logger="Q2" realm="query-host"/>
+    <participant class="eldar.participants.SaveTranlogParticipant" logger="Q2" realm="save-tranlog-participant"/>
+    <participant class="org.jpos.transaction.Close" logger="Q2" realm="close-db"/>
+    <participant class="org.jpos.transaction.participant.SendResponse" logger="Q2" realm="send-response"/>
 </txnmgr>

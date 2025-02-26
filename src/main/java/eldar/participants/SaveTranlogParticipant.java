@@ -1,5 +1,7 @@
-package eldar.entities;
+package eldar.participants;
 
+import eldar.entities.Tranlog;
+import eldar.entities.TranlogDAO;
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;

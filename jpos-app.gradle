@@ -261,5 +261,11 @@ task viewTests (description: 'Open Test Reports') {
         Class.forName("java.awt.Desktop").newInstance().browse(
             new File("${buildDir}/reports/tests/test", 'index.html').toURI())
     }
+
+    task debug( dependsOn: 'installApp', type: Exec ) {
+        workingDir installDir
+        commandLine 'java','-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005','-jar', archiveJarName
+    }
+
 }
 

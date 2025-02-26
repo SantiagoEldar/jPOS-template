@@ -1,4 +1,4 @@
-package eldar.entities;
+package eldar.filters;
 
 import org.jpos.core.Configurable;
 import org.jpos.core.Configuration;

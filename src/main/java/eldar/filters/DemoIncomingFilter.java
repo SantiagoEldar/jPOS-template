@@ -1,4 +1,4 @@
-package eldar.entities;
+package eldar.filters;
 
 import org.jpos.iso.ISOChannel;
 import org.jpos.iso.ISOFilter;

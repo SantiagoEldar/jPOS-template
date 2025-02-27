@@ -10,6 +10,9 @@
         <property name="timeout" value="30000"/>
     </participant>
     <participant class="org.jpos.transaction.participant.QueryHost" logger="Q2" realm="query-host"/>
+    <participant class="eldar.participants.ProcessingCodeFilterParticipant" logger="Q2" realm="processing-code-filter-participant"/>
+    <participant class="eldar.participants.CashWithdrawalParticipant" logger="Q2" realm="cash-withdrawal-participant"/>
+    <participant class="eldar.participants.ServicePaymentParticipant" logger="Q2" realm="service-payment-participant"/>
     <participant class="eldar.participants.SaveTranlogParticipant" logger="Q2" realm="save-tranlog-participant"/>
     <participant class="org.jpos.transaction.Close" logger="Q2" realm="close-db"/>
     <participant class="org.jpos.transaction.participant.SendResponse" logger="Q2" realm="send-response"/>

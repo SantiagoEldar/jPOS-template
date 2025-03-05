@@ -35,6 +35,9 @@ public class ProcessingCodeFilterParticipant extends TxnSupport implements Seria
                 case "210000":
                     transactionType = "DEPOSIT";
                     break;
+                case "310000":
+                    transactionType = "BALANCE_INQUIRY";
+                    break;
                 default:
                     transactionType = "UNKNOWN";
                     break;

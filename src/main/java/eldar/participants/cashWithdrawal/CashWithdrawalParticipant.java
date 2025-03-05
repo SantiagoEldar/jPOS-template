@@ -1,4 +1,4 @@
-package eldar.participants;
+package eldar.participants.cashWithdrawal;
 
 import org.jpos.transaction.Context;
 import org.jpos.iso.ISOMsg;
@@ -6,7 +6,7 @@ import org.jpos.transaction.TxnSupport;
 
 import java.io.Serializable;
 
-public class CashWithdrawalParticipant extends TxnSupport implements Serializable{
+public class CashWithdrawalParticipant extends TxnSupport implements Serializable {
 
     private static final long serialVersionUID = 1L; // Versión de serialización
 
@@ -14,25 +14,22 @@ public class CashWithdrawalParticipant extends TxnSupport implements Serializabl
     public int prepare(long id, Serializable context) {
         Context ctx = (Context) context;
         try {
+            // Obtener el mensaje ISO desde el contexto
             ISOMsg isoMsg = (ISOMsg) ctx.get("REQUEST");
             if (isoMsg == null) {
                 System.out.println("No se recibió un mensaje ISO.");
                 return ABORTED;
             }
 
-                System.out.println("Procesando RETIRO DE EFECTIVO...");
+            // Obtener el monto de la transacción desde el campo 4 del mensaje ISO
+            String amount = isoMsg.getString(4);  // El monto de la transacción está en el campo 4
+            double withdrawalAmount = Integer.parseInt(amount) / 100.0;  // Convertir a formato estándar (dividir entre 100)
 
-                // Simulación de validación de saldo
-                String amount = isoMsg.getString(4);
-                int amountValue = Integer.parseInt(amount);
+            // Guardar el monto de retiro en el contexto
+            ctx.put("WITHDRAWAL_AMOUNT", withdrawalAmount);
 
-                if (amountValue > 50000) {  // Límite de prueba: 500.00 USD
-                    System.out.println("Saldo insuficiente.");
-                    return ABORTED;
-                }
-
-                System.out.println("Retiro aprobado: $" + (amountValue / 100.0));
-                return PREPARED;
+            System.out.println("Monto de retiro guardado: $" + withdrawalAmount);
+            return PREPARED;
 
         } catch (Exception e) {
             System.out.println("Error en CashWithdrawalParticipant: " + e.getMessage());

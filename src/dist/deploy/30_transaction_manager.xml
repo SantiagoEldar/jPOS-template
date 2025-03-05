@@ -20,20 +20,30 @@
     <!-- SWITCH: Selección dinámica de participantes -->
     <participant class="eldar.participants.Switch" logger="Q2" realm="Switch-AppTxnmgr">
         <property name="ctx-key" value="TRANSACTION_TYPE" />
-        <property name="CASH_WITHDRAWAL" value="CASH_WITHDRAWAL SAVE_TRANLOG CLOSE"/>
-        <property name="SERVICE_PAYMENT" value="SERVICE_PAYMENT  SAVE_TRANLOG CLOSE"/>
-        <property name="DEPOSIT" value="DEPOSIT SAVE_TRANLOG CLOSE"/>
+        <property name="CASH_WITHDRAWAL" value="CASH_WITHDRAWAL TRANSACTION_LOGGER SAVE_TRANLOG CLOSE"/>
+        <property name="SERVICE_PAYMENT" value="SERVICE_PAYMENT TRANSACTION_LOGGER SAVE_TRANLOG CLOSE"/>
+        <property name="DEPOSIT" value="DEPOSIT TRANSACTION_LOGGER SAVE_TRANLOG CLOSE"/>
+        <property name="BALANCE_INQUIRY" value="BALANCE_INQUIRY TRANSACTION_LOGGER SAVE_TRANLOG CLOSE"/>
         <property name="UNKNOWN" value="CLOSE"/>
     </participant>
 
     <group name="CASH_WITHDRAWAL">
-        <participant class="eldar.participants.CashWithdrawalParticipant" logger="Q2" realm="cash-withdrawal-participant"/>
+        <!-- Retiro de efectivo -->
+        <participant class="eldar.participants.cashWithdrawal.CashWithdrawalParticipant" logger="Q2" realm="cash-withdrawal-participant"/>
+        <!-- Aplicar la tarifa -->
+        <participant class="eldar.participants.cashWithdrawal.TransactionFeeParticipant" logger="Q2" realm="transaction-fee-participant"/>
     </group>
     <group name="SERVICE_PAYMENT">
         <participant class="eldar.participants.ServicePaymentParticipant" logger="Q2" realm="service-payment-participant"/>
     </group>
     <group name="DEPOSIT">
         <participant class="eldar.participants.DepositParticipant" logger="Q2" realm="deposit-participant"/>
+    </group>
+    <group name="BALANCE_INQUIRY">
+        <participant class="eldar.participants.BalanceInquiryHandlerParticipant" logger="Q2" realm="balance-inquiry-handler-participant"/>
+    </group>
+    <group name="TRANSACTION_LOGGER">
+        <participant class="eldar.participants.TransactionLoggerParticipant" logger="Q2" realm="transaction-logger-participant"/>
     </group>
     <group name="SAVE_TRANLOG">
         <participant class="eldar.participants.SaveTranlogParticipant" logger="Q2" realm="save-tranlog-participant"/>

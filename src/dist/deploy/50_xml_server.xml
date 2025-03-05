@@ -8,6 +8,10 @@
              logger="Q2"
              realm="xml-server-8000">
         <property name="timeout" value="180000"/>
+        <participant class="eldar.filters.DemoIncomingFilter" logger="Q2" realm="demo-incoming-filter"/>
+        <participant class="eldar.filters.DemoOutgoingFilter" logger="Q2" realm="demo-outgoing-filter">
+            <property name="codigo-aprobado" value="00"/>
+        </participant>
     </channel>
     <request-listener class="org.jpos.iso.IncomingListener" logger="Q2"
                       realm="incoming-request-listener">

@@ -1,19 +1,44 @@
-<!--Administrador de transacciones-->
+<!-- Administrador de transacciones -->
 <txnmgr class="org.jpos.transaction.TransactionManager" logger="Q2">
     <property name="queue" value="TXNMGR"/>
     <property name="sessions" value="2"/>
     <property name="max-sessions" value="128"/>
     <property name="debug" value="true"/>
 
+    <!-- Apertura de la transacción -->
     <participant class="org.jpos.transaction.Open" logger="Q2" realm="open-db">
         <property name="checkpoint" value="open"/>
         <property name="timeout" value="30000"/>
     </participant>
+
+    <!-- Validación con el host -->
     <participant class="org.jpos.transaction.participant.QueryHost" logger="Q2" realm="query-host"/>
+
+    <!-- Filtro basado en código de procesamiento -->
     <participant class="eldar.participants.ProcessingCodeFilterParticipant" logger="Q2" realm="processing-code-filter-participant"/>
-    <participant class="eldar.participants.CashWithdrawalParticipant" logger="Q2" realm="cash-withdrawal-participant"/>
-    <participant class="eldar.participants.ServicePaymentParticipant" logger="Q2" realm="service-payment-participant"/>
-    <participant class="eldar.participants.SaveTranlogParticipant" logger="Q2" realm="save-tranlog-participant"/>
-    <participant class="org.jpos.transaction.Close" logger="Q2" realm="close-db"/>
-    <participant class="org.jpos.transaction.participant.SendResponse" logger="Q2" realm="send-response"/>
+
+    <!-- SWITCH: Selección dinámica de participantes -->
+    <participant class="eldar.participants.Switch" logger="Q2" realm="Switch-AppTxnmgr">
+        <property name="ctx-key" value="TRANSACTION_TYPE" />
+        <property name="CASH_WITHDRAWAL" value="CASH_WITHDRAWAL SAVE_TRANLOG CLOSE"/>
+        <property name="SERVICE_PAYMENT" value="SERVICE_PAYMENT  SAVE_TRANLOG CLOSE"/>
+        <property name="DEPOSIT" value="DEPOSIT SAVE_TRANLOG CLOSE"/>
+        <property name="UNKNOWN" value="CLOSE"/>
+    </participant>
+
+    <group name="CASH_WITHDRAWAL">
+        <participant class="eldar.participants.CashWithdrawalParticipant" logger="Q2" realm="cash-withdrawal-participant"/>
+    </group>
+    <group name="SERVICE_PAYMENT">
+        <participant class="eldar.participants.ServicePaymentParticipant" logger="Q2" realm="service-payment-participant"/>
+    </group>
+    <group name="DEPOSIT">
+        <participant class="eldar.participants.DepositParticipant" logger="Q2" realm="deposit-participant"/>
+    </group>
+    <group name="SAVE_TRANLOG">
+        <participant class="eldar.participants.SaveTranlogParticipant" logger="Q2" realm="save-tranlog-participant"/>
+    </group>
+    <group name="CLOSE">
+        <participant class="org.jpos.transaction.Close" logger="Q2" realm="close-db"/>
+    </group>
 </txnmgr>

@@ -26,14 +26,14 @@ public class ProcessingCodeFilterParticipant extends TxnSupport implements Seria
             // Determinar tipo de transacción
             String transactionType;
             switch (processingCode) {
-                case "000000":
-                    transactionType = "PURCHASE";
-                    break;
                 case "010000":
                     transactionType = "CASH_WITHDRAWAL";
                     break;
                 case "420000":
-                    transactionType = "Service_Payment";
+                    transactionType = "SERVICE_PAYMENT";
+                    break;
+                case "210000":
+                    transactionType = "DEPOSIT";
                     break;
                 default:
                     transactionType = "UNKNOWN";

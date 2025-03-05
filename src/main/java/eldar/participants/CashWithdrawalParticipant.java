@@ -12,16 +12,14 @@ public class CashWithdrawalParticipant extends TxnSupport implements Serializabl
 
     @Override
     public int prepare(long id, Serializable context) {
+        Context ctx = (Context) context;
         try {
-            Context ctx = (Context) context;
             ISOMsg isoMsg = (ISOMsg) ctx.get("REQUEST");
             if (isoMsg == null) {
                 System.out.println("No se recibió un mensaje ISO.");
                 return ABORTED;
             }
 
-            String processingCode = isoMsg.getString(3);
-            if ("010000".equals(processingCode)) {
                 System.out.println("Procesando RETIRO DE EFECTIVO...");
 
                 // Simulación de validación de saldo
@@ -35,10 +33,7 @@ public class CashWithdrawalParticipant extends TxnSupport implements Serializabl
 
                 System.out.println("Retiro aprobado: $" + (amountValue / 100.0));
                 return PREPARED;
-            }
 
-            System.out.println("Código de procesamiento no válido para este participante.");
-            return ABORTED;
         } catch (Exception e) {
             System.out.println("Error en CashWithdrawalParticipant: " + e.getMessage());
             e.printStackTrace();

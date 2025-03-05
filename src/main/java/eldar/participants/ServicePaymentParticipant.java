@@ -12,16 +12,14 @@ public class ServicePaymentParticipant extends TxnSupport implements Serializabl
 
     @Override
     public int prepare(long id, Serializable context) {
+        Context ctx = (Context) context;
         try {
-            Context ctx = (Context) context;
             ISOMsg isoMsg = (ISOMsg) ctx.get("REQUEST");
             if (isoMsg == null) {
                 System.out.println("No se recibió un mensaje ISO.");
                 return ABORTED;
             }
 
-            String processingCode = isoMsg.getString(3);
-            if ("420000".equals(processingCode)) { // Código de procesamiento para pagos de servicios
                 System.out.println("Procesando PAGO DE SERVICIOS...");
 
                 // Simulación de validación de saldo
@@ -29,15 +27,13 @@ public class ServicePaymentParticipant extends TxnSupport implements Serializabl
                 double paymentAmount = Double.parseDouble(amount) / 100.0;
 
                 if (paymentAmount > 1000.00) { // Simulando un límite
-                    System.out.println("Monto excede el límite permitido. Pago rechazado.");
+                    System.out.println("Monto excede el limite permitido. Pago rechazado.");
                     return ABORTED;
                 }
 
                 System.out.println("Pago aprobado: $" + paymentAmount);
                 return PREPARED;
-            }
 
-            return ABORTED;
         } catch (Exception e) {
             e.printStackTrace();
             return ABORTED;
